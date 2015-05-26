@@ -53,7 +53,9 @@ class WP_Roller {
 	}
 
 	public function roller_page() {
-
+?>
+<h1>Roller</h1>
+<?php
 	}
 
 	public function shortcode_roller( $atts ) {
