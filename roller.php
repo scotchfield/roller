@@ -37,6 +37,7 @@ class WP_Roller {
 
 		add_shortcode( 'roller', array( $this, 'shortcode_roller' ) );
 		add_shortcode( 'roller_var', array( $this, 'shortcode_roller_var' ) );
+		add_shortcode( 'roller_csv', array( $this, 'shortcode_roller_csv' ) );
 	}
 
 	/**
@@ -82,6 +83,10 @@ class WP_Roller {
 		if ( isset( $atts[ 0 ] ) && isset( $this->state[ $atts[ 0 ] ] ) ) {
 			return $this->state[ $atts[ 0 ] ];
 		}
+	}
+
+	public function shortcode_roller_csv( $atts ) {
+		return '';
 	}
 }
 
