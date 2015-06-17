@@ -44,11 +44,11 @@ class WP_Roller {
 	 * Add a link to a settings page.
 	 */
 	public function admin_menu() {
-		$page = add_options_page(
+		add_menu_page(
 			'Roller',
 			'Roller',
 			'manage_options',
-			self::DOMAIN,
+			'roller_menu',
 			array( $this, 'roller_page' )
 		);
 	}
