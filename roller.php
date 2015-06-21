@@ -32,12 +32,13 @@ class WP_Roller {
 		mt_srand();
 
 		$this->state = array();
+		$this->lists = FALSE;
 
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 		add_shortcode( 'roller', array( $this, 'shortcode_roller' ) );
 		add_shortcode( 'roller_var', array( $this, 'shortcode_roller_var' ) );
-		add_shortcode( 'roller_csv', array( $this, 'shortcode_roller_csv' ) );
+		add_shortcode( 'roller_choose', array( $this, 'shortcode_roller_choose' ) );
 	}
 
 	/**
@@ -72,6 +73,7 @@ class WP_Roller {
 
 				if ( isset( $atts[ 'var' ] ) ) {
 					$this->state[ $atts[ 'var' ] ] = $result;
+					return '';
 				}
 
 				return $result;
@@ -85,8 +87,22 @@ class WP_Roller {
 		}
 	}
 
-	public function shortcode_roller_csv( $atts ) {
-		return '';
+	public function shortcode_roller_choose( $atts ) {
+		if ( FALSE == $this->lists ) {
+			$this->lists = get_option( 'roller_lists', array() );
+		}
+
+		if ( ! isset( $atts[ 'list' ] ) ) {
+			return '';
+		}
+
+		$list = $atts[ 'list' ];
+
+		if ( ! isset( $this->lists[ $list ] ) ) {
+			return '';
+		}
+
+		return array_rand( $this->lists[ $list ] );
 	}
 }
 
