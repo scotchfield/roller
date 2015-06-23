@@ -70,9 +70,15 @@ class WP_Roller {
 		if ( isset( $_POST[ 'new_var' ] ) ) {
 			$var = $_POST[ 'var' ];
 			if ( ! isset( $this->lists[ $var ] ) ) {
-				$this->lists[ $var ] = array();
+				$this->lists[ $var ] = '';
 				update_option( 'roller_lists', $this->lists );
 			}
+		}
+
+		if ( isset( $_POST[ 'update_var' ] ) ) {
+			$var = $_POST[ 'var' ];
+			$this->lists[ $var ] = $_POST[ 'var_text' ];
+			update_option( 'roller_lists', $this->lists );
 		}
 
 ?>
@@ -85,8 +91,17 @@ class WP_Roller {
 <h2>Lists</h2>
 <?php
 
-		foreach ( $this->lists as $list ) {
-			print_r( $list );
+		if ( false != $this->lists ) {
+			foreach ( $this->lists as $list_key => $list ) {
+?>
+<form method="post">
+<input type="hidden" name="var" value="<?php echo( $list_key ); ?>" />
+<h3><?php echo( $list_key ); ?></h3>
+<textarea name="var_text"><?php echo( $list ); ?></textarea>
+<input name="update_var" type="submit" value="Update List" />
+</form>
+<?php
+			}
 		}
 
 	}
@@ -131,7 +146,15 @@ class WP_Roller {
 			return '';
 		}
 
-		return array_rand( $this->lists[ $list ] );
+		$obj = explode( "\n", $this->lists[ $list ] );
+		$val = array_rand( $obj );
+
+		if ( isset( $atts[ 'var' ] ) ) {
+			$this->state[ $atts[ 'var' ] ] = $obj[ $val ];
+			return '';
+		}
+
+		return $obj[ $val ];
 	}
 }
 
