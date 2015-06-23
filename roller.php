@@ -54,10 +54,41 @@ class WP_Roller {
 		);
 	}
 
+	private function ensure_lists() {
+		if ( FALSE == $this->lists ) {
+			$this->lists = get_option( 'roller_lists', array() );
+		}
+	}
+
 	public function roller_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', self::DOMAIN ) );
+		}
+
+		$this->ensure_lists();
+
+		if ( isset( $_POST[ 'new_var' ] ) ) {
+			$var = $_POST[ 'var' ];
+			if ( ! isset( $this->lists[ $var ] ) ) {
+				$this->lists[ $var ] = array();
+				update_option( 'roller_lists', $this->lists );
+			}
+		}
+
 ?>
 <h1>Roller</h1>
+
+<form method="post">
+<p><b>New list:</b> <input type="text" name="var" /> <input type="submit" name="new_var" value="Create List" /></p>
+</form>
+
+<h2>Lists</h2>
 <?php
+
+		foreach ( $this->lists as $list ) {
+			print_r( $list );
+		}
+
 	}
 
 	public function shortcode_roller( $atts ) {
@@ -88,9 +119,7 @@ class WP_Roller {
 	}
 
 	public function shortcode_roller_choose( $atts ) {
-		if ( FALSE == $this->lists ) {
-			$this->lists = get_option( 'roller_lists', array() );
-		}
+		$this->ensure_lists();
 
 		if ( ! isset( $atts[ 'list' ] ) ) {
 			return '';
