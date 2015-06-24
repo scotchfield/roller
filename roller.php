@@ -39,6 +39,7 @@ class WP_Roller {
 		add_shortcode( 'roller', array( $this, 'shortcode_roller' ) );
 		add_shortcode( 'roller_var', array( $this, 'shortcode_roller_var' ) );
 		add_shortcode( 'roller_choose', array( $this, 'shortcode_roller_choose' ) );
+		add_shortcode( 'roller_if', array( $this, 'shortcode_roller_if' ) );
 	}
 
 	/**
@@ -150,11 +151,27 @@ class WP_Roller {
 		$val = array_rand( $obj );
 
 		if ( isset( $atts[ 'var' ] ) ) {
-			$this->state[ $atts[ 'var' ] ] = $obj[ $val ];
+			$this->state[ $atts[ 'var' ] ] = trim( $obj[ $val ] );
 			return '';
 		}
 
 		return $obj[ $val ];
+	}
+
+	public function shortcode_roller_if( $atts, $content ) {
+		$state = true;
+
+		foreach ( $atts as $k => $v ) {
+			if ( ! isset( $this->state[ $k ] ) || $this->state[ $k ] != $v ) {
+				$state = false;
+			}
+		}
+
+		if ( $state ) {
+			return do_shortcode( $content );
+		}
+
+		return '';
 	}
 }
 
