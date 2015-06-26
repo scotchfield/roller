@@ -109,13 +109,19 @@ class WP_Roller {
 
 	public function shortcode_roller( $atts ) {
 		if ( isset( $atts[ 0 ] ) ) {
-			$pattern = '/(\d*)d(\d*)/';
+			$pattern = '/(\d*)d(\d*)([+-]*)(\d*)/';
 			if ( preg_match( $pattern, $atts[ 0 ], $match ) ) {
 				$result = 0;
 				$n = intval( $match[ 1 ] );
 				$d = intval( $match[ 2 ] );
 				for ( $i = 0; $i < $n; $i += 1 ) {
 					$result += mt_rand( 1, $d );
+				}
+
+				if ( $match[ 3 ] == '+' ) {
+					$result += intval( $match[ 4 ] );
+				} else if ( $match[ 4 ] == '-' ) {
+					$result += intval( $match[ 4 ] );
 				}
 
 				if ( isset( $atts[ 'var' ] ) ) {
