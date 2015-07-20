@@ -40,6 +40,7 @@ class WP_Roller {
 		add_shortcode( 'roller_var', array( $this, 'shortcode_roller_var' ) );
 		add_shortcode( 'roller_choose', array( $this, 'shortcode_roller_choose' ) );
 		add_shortcode( 'roller_if', array( $this, 'shortcode_roller_if' ) );
+		add_shortcode( 'roller_loop', array( $this, 'shortcode_roller_loop' ) );
 	}
 
 	/**
@@ -178,6 +179,23 @@ class WP_Roller {
 		}
 
 		return '';
+	}
+
+	public function shortcode_roller_loop( $atts, $content ) {
+		if ( ! isset( $atts[ 0 ] ) ) {
+			return '';
+		}
+
+		$i = intval( $atts[ 0 ] );
+		$st = '';
+
+		while ( $i > 0 ) {
+			$st .= do_shortcode( $content );
+
+			$i -= 1;
+		}
+
+		return $st;
 	}
 }
 
