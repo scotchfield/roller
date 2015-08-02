@@ -56,12 +56,18 @@ class WP_Roller {
 		);
 	}
 
+	/**
+	 * Make sure the custom lists are loaded inside the class.
+	 */
 	private function ensure_lists() {
 		if ( FALSE == $this->lists ) {
 			$this->lists = get_option( 'roller_lists', array() );
 		}
 	}
 
+	/**
+	 * Show the admin page, which is essentially the collection of custom lists.
+	 */
 	public function roller_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', self::DOMAIN ) );
@@ -108,6 +114,9 @@ class WP_Roller {
 
 	}
 
+	/**
+	 * Perform a dice roll, and either output it immediately or store it in a variable.
+	 */
 	public function shortcode_roller( $atts ) {
 		if ( isset( $atts[ 0 ] ) ) {
 			$pattern = '/(\d*)d(\d*)([+-]*)(\d*)/';
@@ -159,6 +168,7 @@ class WP_Roller {
 
 		if ( isset( $atts[ 'var' ] ) ) {
 			$this->state[ $atts[ 'var' ] ] = trim( $obj[ $val ] );
+
 			return '';
 		}
 
