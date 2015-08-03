@@ -43,6 +43,10 @@ class WP_Roller {
 		add_shortcode( 'roller_loop', array( $this, 'shortcode_roller_loop' ) );
 	}
 
+	public static function get_instance() {
+		return self::$instance;
+	}
+
 	/**
 	 * Add a link to a settings page.
 	 */
