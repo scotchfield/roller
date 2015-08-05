@@ -13,6 +13,7 @@ class Test_Roller extends WP_UnitTestCase {
 
 	/**
 	 * @covers WP_Roller::init
+	 * @covers WP_Roller::reset
 	 */
 	public function test_init() {
 		$class = WP_Roller::get_instance();

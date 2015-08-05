@@ -32,12 +32,11 @@ class WP_Roller {
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
+	public static function get_instance() {
+		return self::$instance;
+	}
+
 	public function init() {
-		mt_srand();
-
-		$this->state = array();
-		$this->lists = FALSE;
-
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 		add_shortcode( 'roller', array( $this, 'shortcode_roller' ) );
@@ -45,10 +44,15 @@ class WP_Roller {
 		add_shortcode( 'roller_choose', array( $this, 'shortcode_roller_choose' ) );
 		add_shortcode( 'roller_if', array( $this, 'shortcode_roller_if' ) );
 		add_shortcode( 'roller_loop', array( $this, 'shortcode_roller_loop' ) );
+
+		$this->reset();
 	}
 
-	public static function get_instance() {
-		return self::$instance;
+	public function reset() {
+		mt_srand();
+
+		$this->state = array();
+		$this->lists = FALSE;
 	}
 
 	/**
