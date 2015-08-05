@@ -29,6 +29,10 @@ class WP_Roller {
 
 		self::$instance = $this;
 
+		add_action( 'init', array( $this, 'init' ) );
+	}
+
+	public function init() {
 		mt_srand();
 
 		$this->state = array();
