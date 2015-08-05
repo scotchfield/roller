@@ -68,7 +68,7 @@ class WP_Roller {
 	 * Make sure the custom lists are loaded inside the class.
 	 */
 	private function ensure_lists() {
-		if ( FALSE == $this->lists ) {
+		if ( FALSE === $this->lists ) {
 			$this->lists = get_option( 'roller_lists', array() );
 		}
 	}
@@ -107,7 +107,7 @@ class WP_Roller {
 <h2>Lists</h2>
 <?php
 
-		if ( false != $this->lists ) {
+		if ( ! empty( $this->lists ) ) {
 			foreach ( $this->lists as $list_key => $list ) {
 ?>
 <form method="post">
@@ -188,7 +188,7 @@ class WP_Roller {
 
 		foreach ( $atts as $k => $v ) {
 			if ( ! isset( $this->state[ $k ] ) || $this->state[ $k ] != $v ) {
-				$state = false;
+				$state = FALSE;
 			}
 		}
 
