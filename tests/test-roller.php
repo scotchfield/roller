@@ -155,7 +155,7 @@ class Test_Roller extends WP_UnitTestCase {
 	public function test_get_var_empty() {
 		$class = WP_Roller::get_instance();
 
-		$this->assertNull( $class->get_var( 'does_not_exist' ) );
+		$this->assertEmpty( $class->get_var( 'does_not_exist' ) );
 	}
 
 	/**
@@ -180,7 +180,7 @@ class Test_Roller extends WP_UnitTestCase {
 	public function test_shortcode_roller_var_empty() {
 		$class = WP_Roller::get_instance();
 
-		$this->assertNull( $class->shortcode_roller_var( array() ) );
+		$this->assertEmpty( $class->shortcode_roller_var( array() ) );
 	}
 
 	/**
@@ -192,7 +192,7 @@ class Test_Roller extends WP_UnitTestCase {
 
 		$var = 'test_var';
 
-		$this->assertNull( $class->shortcode_roller_var( array( 'var' => $var ) ) );
+		$this->assertEmpty( $class->shortcode_roller_var( array( 'var' => $var ) ) );
 	}
 
 	/**
@@ -215,7 +215,7 @@ class Test_Roller extends WP_UnitTestCase {
 	public function test_shortcode_roller_choose_empty() {
 		$class = WP_Roller::get_instance();
 
-		$this->assertNull( $class->shortcode_roller_choose( array() ) );
+		$this->assertEmpty( $class->shortcode_roller_choose( array() ) );
 	}
 
 	/**
@@ -224,7 +224,7 @@ class Test_Roller extends WP_UnitTestCase {
 	public function test_shortcode_roller_choose_list_does_not_exist() {
 		$class = WP_Roller::get_instance();
 
-		$this->assertNull( $class->shortcode_roller_choose( array( 'list' => 'does_not_exist' ) ) );
+		$this->assertEmpty( $class->shortcode_roller_choose( array( 'list' => 'does_not_exist' ) ) );
 	}
 
 	/**
@@ -294,7 +294,18 @@ class Test_Roller extends WP_UnitTestCase {
 
 		$content = 'success';
 
-		$this->assertNull( $class->shortcode_roller_loop( array(), $content ) );
+		$this->assertEmpty( $class->shortcode_roller_loop( array(), $content ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_loop
+	 */
+	public function test_shortcode_roller_loop_invalid() {
+		$class = WP_Roller::get_instance();
+
+		$content = 'success';
+
+		$this->assertEmpty( $class->shortcode_roller_loop( array( 'bad_value' ), $content ) );
 	}
 
 }
