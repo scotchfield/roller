@@ -147,6 +147,16 @@ class Test_Roller extends WP_UnitTestCase {
 	public function test_shortcode_roller_var_empty() {
 		$class = WP_Roller::get_instance();
 
+		$this->assertNull( $class->shortcode_roller_var( array() ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 * @covers WP_Roller::shortcode_roller_var
+	 */
+	public function test_shortcode_roller_var_does_not_exist() {
+		$class = WP_Roller::get_instance();
+
 		$var = 'test_var';
 
 		$this->assertNull( $class->shortcode_roller_var( array( 'var' => $var ) ) );
@@ -165,5 +175,16 @@ class Test_Roller extends WP_UnitTestCase {
 
 		$this->assertEquals( '1', $class->shortcode_roller_var( array( $var ) ) );
 	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 * @covers WP_Roller::shortcode_roller_choose
+	 */
+	public function test_shortcode_roller_choose_empty() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertNull( $class->shortcode_roller_choose( array() ) );
+	}
+
 
 }

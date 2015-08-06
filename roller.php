@@ -175,26 +175,18 @@ class WP_Roller {
 	public function shortcode_roller_choose( $atts ) {
 		$this->ensure_lists();
 
-		if ( ! isset( $atts[ 'list' ] ) ) {
-			return '';
+		if ( isset( $atts[ 'list' ] ) && isset( $this->lists[ $atts[ 'list' ] ] ) ) {
+			$list = $atts[ 'list' ];
+
+			$obj = explode( "\n", $this->lists[ $list ] );
+			$val = array_rand( $obj );
+
+			if ( isset( $atts[ 'var' ] ) ) {
+				$this->state[ $atts[ 'var' ] ] = trim( $obj[ $val ] );
+			} else {
+				return $obj[ $val ];
+			}
 		}
-
-		$list = $atts[ 'list' ];
-
-		if ( ! isset( $this->lists[ $list ] ) ) {
-			return '';
-		}
-
-		$obj = explode( "\n", $this->lists[ $list ] );
-		$val = array_rand( $obj );
-
-		if ( isset( $atts[ 'var' ] ) ) {
-			$this->state[ $atts[ 'var' ] ] = trim( $obj[ $val ] );
-
-			return '';
-		}
-
-		return $obj[ $val ];
 	}
 
 	public function shortcode_roller_if( $atts, $content ) {
