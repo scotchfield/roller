@@ -84,8 +84,6 @@ class WP_Roller {
 		if ( isset( $this->state[ $var ] ) ) {
 			return $this->state[ $var ];
 		}
-
-		return null;
 	}
 
 	/**

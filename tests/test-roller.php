@@ -50,6 +50,30 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::get_list
+	 */
+	public function test_get_list_empty() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertFalse( $class->get_list( 'does_not_exist' ) );
+	}
+
+	/**
+	 * @covers WP_Roller::update_list
+	 * @covers WP_Roller::get_list
+	 */
+	public function test_update_list_and_get_list() {
+		$class = WP_Roller::get_instance();
+
+		$list_id = 'test_list';
+		$list = "test\nlist";
+
+		$class->update_list( $list_id, $list );
+
+		$this->assertEquals( $list, $class->get_list( $list_id ) );
+	}
+
+	/**
 	 * @covers WP_Roller::ensure_lists
 	 * @covers WP_Roller::roller_page
 	 */
@@ -126,6 +150,15 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::get_var
+	 */
+	public function test_get_var_empty() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertNull( $class->get_var( 'does_not_exist' ) );
+	}
+
+	/**
 	 * @covers WP_Roller::shortcode_roller
 	 * @covers WP_Roller::get_var
 	 */
@@ -177,13 +210,58 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers WP_Roller::shortcode_roller
 	 * @covers WP_Roller::shortcode_roller_choose
 	 */
 	public function test_shortcode_roller_choose_empty() {
 		$class = WP_Roller::get_instance();
 
 		$this->assertNull( $class->shortcode_roller_choose( array() ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_choose
+	 */
+	public function test_shortcode_roller_choose_list_does_not_exist() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertNull( $class->shortcode_roller_choose( array( 'list' => 'does_not_exist' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::update_list
+	 * @covers WP_Roller::shortcode_roller_choose
+	 */
+	public function test_shortcode_roller_choose_list_exists() {
+		$class = WP_Roller::get_instance();
+
+		$list_id = 'test_list';
+		$list = "test\nlist";
+
+		$class->update_list( $list_id, $list );
+
+		$result = $class->shortcode_roller_choose( array( 'list' => $list_id ) );
+
+		$this->assertTrue( in_array( $result, explode( "\n", $list ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::get_var
+	 * @covers WP_Roller::update_list
+	 * @covers WP_Roller::shortcode_roller_choose
+	 */
+	public function test_shortcode_roller_choose_list_exists_set_var() {
+		$class = WP_Roller::get_instance();
+
+		$var_id = 'test_var';
+		$list_id = 'test_list';
+		$list = "test\nlist";
+
+		$class->update_list( $list_id, $list );
+
+		$result = $class->shortcode_roller_choose( array( 'list' => $list_id, 'var' => $var_id ) );
+
+		$this->assertNull( $result );
+		$this->assertTrue( in_array( $class->get_var( $var_id ), explode( "\n", $list ) ) );
 	}
 
 
