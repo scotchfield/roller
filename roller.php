@@ -225,7 +225,7 @@ class WP_Roller {
 
 	public function shortcode_roller_loop( $atts, $content ) {
 		if ( ! isset( $atts[ 0 ] ) ) {
-			return '';
+			return;
 		}
 
 		$i = intval( $atts[ 0 ] );
