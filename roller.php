@@ -52,7 +52,7 @@ class WP_Roller {
 		mt_srand();
 
 		$this->state = array();
-		$this->lists = FALSE;
+		$this->lists = false;
 	}
 
 	/**
@@ -72,7 +72,7 @@ class WP_Roller {
 	 * Make sure the custom lists are loaded inside the class.
 	 */
 	private function ensure_lists() {
-		if ( FALSE === $this->lists ) {
+		if ( false === $this->lists ) {
 			$this->lists = get_option( 'roller_lists', array() );
 		}
 	}
@@ -89,6 +89,26 @@ class WP_Roller {
 	}
 
 	/**
+	 * Get the value of a stored list.
+	 */
+	public function get_list( $id ) {
+		if ( isset( $this->lists[ $id ] ) ) {
+			return $this->lists[ $id ];
+		}
+
+		return false;
+	}
+
+	/**
+	 * Update the value of a stored list.
+	 */
+	public function update_list( $id, $val ) {
+		$this->lists[ $id ] = $val;
+
+		update_option( 'roller_lists', $this->lists[ $id ] );
+	}
+
+	/**
 	 * Show the admin page, which is essentially the collection of custom lists.
 	 */
 	public function roller_page() {
@@ -98,25 +118,25 @@ class WP_Roller {
 
 		$this->ensure_lists();
 
-		if ( isset( $_POST[ 'new_var' ] ) ) {
-			$var = $_POST[ 'var' ];
-			if ( ! isset( $this->lists[ $var ] ) ) {
-				$this->lists[ $var ] = '';
-				update_option( 'roller_lists', $this->lists );
+		if ( isset( $_POST[ 'new_list' ] ) ) {
+			if ( false === $this->get_list( $_POST[ 'list_id' ] ) ) {
+				$this->update_list( $_POST[ 'list_id' ], '' );
 			}
 		}
 
-		if ( isset( $_POST[ 'update_var' ] ) ) {
-			$var = $_POST[ 'var' ];
-			$this->lists[ $var ] = $_POST[ 'var_text' ];
-			update_option( 'roller_lists', $this->lists );
+		if ( isset( $_POST[ 'update_list' ] ) ) {
+			$this->update_list( $_POST[ 'list_id' ], $_POST[ 'list_value' ] );
 		}
 
 ?>
 <h1>Roller</h1>
 
 <form method="post">
-<p><b>New list:</b> <input type="text" name="var" /> <input type="submit" name="new_var" value="Create List" /></p>
+<p>
+<b>New list:</b>
+<input type="text" name="list_id" />
+<input type="submit" name="new_list" value="Create List" />
+</p>
 </form>
 
 <h2>Lists</h2>
@@ -126,10 +146,10 @@ class WP_Roller {
 			foreach ( $this->lists as $list_key => $list ) {
 ?>
 <form method="post">
-<input type="hidden" name="var" value="<?php echo( $list_key ); ?>" />
+<input type="hidden" name="list_id" value="<?php echo( $list_key ); ?>" />
 <h3><?php echo( $list_key ); ?></h3>
-<textarea name="var_text"><?php echo( $list ); ?></textarea>
-<input name="update_var" type="submit" value="Update List" />
+<textarea name="list_value"><?php echo( $list ); ?></textarea>
+<input name="update_list" type="submit" value="Update List" />
 </form>
 <?php
 			}
@@ -194,7 +214,7 @@ class WP_Roller {
 
 		foreach ( $atts as $k => $v ) {
 			if ( ! isset( $this->state[ $k ] ) || $this->state[ $k ] != $v ) {
-				$state = FALSE;
+				$state = false;
 			}
 		}
 
