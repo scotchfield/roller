@@ -308,4 +308,29 @@ class Test_Roller extends WP_UnitTestCase {
 		$this->assertEmpty( $class->shortcode_roller_loop( array( 'bad_value' ), $content ) );
 	}
 
+	/**
+	 * @covers WP_Roller::shortcode_roller_loop
+	 */
+	public function test_shortcode_roller_loop_single() {
+		$class = WP_Roller::get_instance();
+
+		$content = 'success';
+
+		$this->assertEquals( $content, $class->shortcode_roller_loop( array( '1' ), $content ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_loop
+	 */
+	public function test_shortcode_roller_loop_multiple() {
+		$class = WP_Roller::get_instance();
+
+		$content = 'success';
+
+		$this->assertEquals(
+			$content . $content . $content,
+			$class->shortcode_roller_loop( array( '3' ), $content )
+		);
+	}
+
 }
