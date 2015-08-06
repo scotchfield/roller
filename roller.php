@@ -78,6 +78,17 @@ class WP_Roller {
 	}
 
 	/**
+	 * Return the value of a variable, if it is set.
+	 */
+	public function get_var( $var ) {
+		if ( isset( $this->state[ $var ] ) ) {
+			return $this->state[ $var ];
+		}
+
+		return null;
+	}
+
+	/**
 	 * Show the admin page, which is essentially the collection of custom lists.
 	 */
 	public function roller_page() {
@@ -142,23 +153,22 @@ class WP_Roller {
 
 				if ( $match[ 3 ] == '+' ) {
 					$result += intval( $match[ 4 ] );
-				} else if ( $match[ 4 ] == '-' ) {
-					$result += intval( $match[ 4 ] );
+				} else if ( $match[ 3 ] == '-' ) {
+					$result -= intval( $match[ 4 ] );
 				}
 
 				if ( isset( $atts[ 'var' ] ) ) {
 					$this->state[ $atts[ 'var' ] ] = $result;
-					return '';
+				} else {
+					return $result;
 				}
-
-				return $result;
 			}
 		}
 	}
 
 	public function shortcode_roller_var( $atts ) {
-		if ( isset( $atts[ 0 ] ) && isset( $this->state[ $atts[ 0 ] ] ) ) {
-			return $this->state[ $atts[ 0 ] ];
+		if ( isset( $atts[ 0 ] ) ) {
+			return $this->get_var( $atts[ 0 ] );
 		}
 	}
 

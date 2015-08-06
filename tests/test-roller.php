@@ -2,6 +2,12 @@
 
 class Test_Roller extends WP_UnitTestCase {
 
+	public function tearDown() {
+		$class = WP_Roller::get_instance();
+
+		$class->reset();
+	}
+
 	/**
 	 * @covers WP_Roller::__construct
 	 */
@@ -63,5 +69,101 @@ class Test_Roller extends WP_UnitTestCase {
 		wp_set_current_user( $old_user_id );
 	}
 
-}
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 */
+	public function test_shortcode_roller_empty() {
+		$class = WP_Roller::get_instance();
 
+		$this->assertEmpty( $class->shortcode_roller( array() ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 */
+	public function test_shortcode_roller_invalid() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertEmpty( $class->shortcode_roller( array( 'bad_content' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 */
+	public function test_shortcode_roller_simple_die_roll() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertEquals( '1', $class->shortcode_roller( array( '1d1' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 */
+	public function test_shortcode_roller_dice_roll_in_range() {
+		$class = WP_Roller::get_instance();
+
+		$result = intval( $class->shortcode_roller( array( '3d6' ) ) );
+
+		$this->assertTrue( $result >= 3 && $result <= 18 );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 */
+	public function test_shortcode_roller_simple_die_roll_plus() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertEquals( '2', $class->shortcode_roller( array( '1d1+1' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 */
+	public function test_shortcode_roller_simple_die_roll_minus() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertEquals( '0', $class->shortcode_roller( array( '1d1-1' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 * @covers WP_Roller::get_var
+	 */
+	public function test_shortcode_roller_dice_roll_stored() {
+		$class = WP_Roller::get_instance();
+
+		$var = 'test_var';
+
+		$result = $class->shortcode_roller( array( '1d1', 'var' => $var ) );
+
+		$this->assertEmpty( $result );
+		$this->assertEquals( '1', $class->get_var( $var ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 * @covers WP_Roller::shortcode_roller_var
+	 */
+	public function test_shortcode_roller_var_empty() {
+		$class = WP_Roller::get_instance();
+
+		$var = 'test_var';
+
+		$this->assertNull( $class->shortcode_roller_var( array( 'var' => $var ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller
+	 * @covers WP_Roller::shortcode_roller_var
+	 */
+	public function test_shortcode_roller_var_stored() {
+		$class = WP_Roller::get_instance();
+
+		$var = 'test_var';
+
+		$result = $class->shortcode_roller( array( '1d1', 'var' => $var ) );
+
+		$this->assertEquals( '1', $class->shortcode_roller_var( array( $var ) ) );
+	}
+
+}
