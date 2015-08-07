@@ -162,30 +162,40 @@ class WP_Roller {
 	}
 
 	/**
+	 * Evaluate an expression passed to the roller class.
+	 */
+	public function expression( $st ) {
+		$result = 0;
+		$pattern = '/(\d*)d(\d*)([+-]*)(\d*)/';
+
+		if ( preg_match( $pattern, $st, $match ) ) {
+			$n = intval( $match[ 1 ] );
+			$d = intval( $match[ 2 ] );
+			for ( $i = 0; $i < $n; $i += 1 ) {
+				$result += mt_rand( 1, $d );
+			}
+
+			if ( $match[ 3 ] == '+' ) {
+				$result += intval( $match[ 4 ] );
+			} else if ( $match[ 3 ] == '-' ) {
+				$result -= intval( $match[ 4 ] );
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Perform a dice roll, and either output it immediately or store it in a variable.
 	 */
 	public function shortcode_roller( $atts ) {
 		if ( isset( $atts[ 0 ] ) ) {
-			$pattern = '/(\d*)d(\d*)([+-]*)(\d*)/';
-			if ( preg_match( $pattern, $atts[ 0 ], $match ) ) {
-				$result = 0;
-				$n = intval( $match[ 1 ] );
-				$d = intval( $match[ 2 ] );
-				for ( $i = 0; $i < $n; $i += 1 ) {
-					$result += mt_rand( 1, $d );
-				}
+			$result = $this->expression( $atts[ 0 ] );
 
-				if ( $match[ 3 ] == '+' ) {
-					$result += intval( $match[ 4 ] );
-				} else if ( $match[ 3 ] == '-' ) {
-					$result -= intval( $match[ 4 ] );
-				}
-
-				if ( isset( $atts[ 'var' ] ) ) {
-					$this->state[ $atts[ 'var' ] ] = $result;
-				} else {
-					return $result;
-				}
+			if ( isset( $atts[ 'var' ] ) ) {
+				$this->state[ $atts[ 'var' ] ] = $result;
+			} else {
+				return $result;
 			}
 		}
 	}
