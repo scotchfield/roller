@@ -39,6 +39,22 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::clear
+	 */
+	public function test_clear() {
+		$class = WP_Roller::get_instance();
+
+		$list_id = 'test_list';
+
+		$class->update_list( $list_id, 'content' );
+
+		$class->reset();
+		$class->clear();
+
+		$this->assertFalse( $class->get_list( $list_id ) );
+	}
+
+	/**
 	 * @covers WP_Roller::admin_menu
 	 */
 	public function test_admin_menu() {
@@ -143,6 +159,39 @@ class Test_Roller extends WP_UnitTestCase {
 		ob_end_clean();
 
 		$this->assertFalse( $class->get_list( $list_id ) );
+
+		unset( $_POST[ 'list_value' ] );
+		unset( $_POST[ 'list_id' ] );
+		unset( $_POST[ 'update_list' ] );
+
+		wp_set_current_user( $old_user_id );
+	}
+
+	/**
+	 * @covers WP_Roller::ensure_lists
+	 * @covers WP_Roller::roller_page
+	 */
+	public function test_roller_page_post_update_list_does_exist() {
+		$user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		$old_user_id = get_current_user_id();
+		wp_set_current_user( $user->ID );
+
+		$class = WP_Roller::get_instance();
+
+		$list_id = 'test_list';
+
+		$class->update_list( $list_id, 'starting_value' );
+
+		$list_value = "new\ntest\nlist";
+		$_POST[ 'update_list' ] = true;
+		$_POST[ 'list_id' ] = $list_id;
+		$_POST[ 'list_value' ] = $list_value;
+
+		ob_start();
+		$class->roller_page();
+		ob_end_clean();
+
+		$this->assertEquals( $list_value, $class->get_list( $list_id ) );
 
 		unset( $_POST[ 'list_value' ] );
 		unset( $_POST[ 'list_id' ] );
