@@ -201,6 +201,15 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::expression
+	 */
+	public function test_expression_empty() {
+		$class = WP_Roller::get_instance();
+
+		$this->assertEquals( 0, $class->expression( '' ) );
+	}
+
+	/**
 	 * @covers WP_Roller::shortcode_roller
 	 */
 	public function test_shortcode_roller_empty() {
@@ -219,6 +228,7 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::expression
 	 * @covers WP_Roller::shortcode_roller
 	 */
 	public function test_shortcode_roller_simple_die_roll() {
@@ -228,6 +238,7 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::expression
 	 * @covers WP_Roller::shortcode_roller
 	 */
 	public function test_shortcode_roller_dice_roll_in_range() {
@@ -239,6 +250,7 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::expression
 	 * @covers WP_Roller::shortcode_roller
 	 */
 	public function test_shortcode_roller_simple_die_roll_plus() {
@@ -248,6 +260,7 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::expression
 	 * @covers WP_Roller::shortcode_roller
 	 */
 	public function test_shortcode_roller_simple_die_roll_minus() {
@@ -266,6 +279,7 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::expression
 	 * @covers WP_Roller::shortcode_roller
 	 * @covers WP_Roller::get_var
 	 */
@@ -303,6 +317,7 @@ class Test_Roller extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers WP_Roller::expression
 	 * @covers WP_Roller::shortcode_roller
 	 * @covers WP_Roller::shortcode_roller_var
 	 */
