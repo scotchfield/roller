@@ -55,6 +55,10 @@ class WP_Roller {
 		$this->lists = false;
 	}
 
+	public function clear() {
+		delete_option( 'roller_lists' );
+	}
+
 	/**
 	 * Add a link to a settings page.
 	 */
@@ -123,7 +127,9 @@ class WP_Roller {
 		}
 
 		if ( isset( $_POST[ 'update_list' ] ) ) {
-			$this->update_list( $_POST[ 'list_id' ], $_POST[ 'list_value' ] );
+			if ( false !== $this->get_list( $_POST[ 'list_id' ] ) ) {
+				$this->update_list( $_POST[ 'list_id' ], $_POST[ 'list_value' ] );
+			}
 		}
 
 ?>
