@@ -32,10 +32,16 @@ class WP_Roller {
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
+	/**
+	 * Return the single instance of our class.
+	 */
 	public static function get_instance() {
 		return self::$instance;
 	}
 
+	/**
+	 * Add hooks, shortcodes, and reset our state.
+	 */
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
@@ -48,6 +54,10 @@ class WP_Roller {
 		$this->reset();
 	}
 
+	/**
+	 * Reset the random seed and clear the state and list caches.
+	 * Does _not_ reload the list state from the options table.
+	 */
 	public function reset() {
 		mt_srand();
 
@@ -55,6 +65,9 @@ class WP_Roller {
 		$this->lists = false;
 	}
 
+	/**
+	 * Delete the list option.
+	 */
 	public function clear() {
 		delete_option( 'roller_lists' );
 	}
@@ -200,12 +213,18 @@ class WP_Roller {
 		}
 	}
 
+	/**
+	 * Return the value of a stored variable, if it is set.
+	 */
 	public function shortcode_roller_var( $atts ) {
 		if ( isset( $atts[ 0 ] ) ) {
 			return $this->get_var( $atts[ 0 ] );
 		}
 	}
 
+	/**
+	 * Choose a random element from a stored and named list of values.
+	 */
 	public function shortcode_roller_choose( $atts ) {
 		$this->ensure_lists();
 
@@ -223,6 +242,10 @@ class WP_Roller {
 		}
 	}
 
+	/**
+	 * Iterate through a list of conditionals; if none are false,
+	 * return the contents of the shortcode block.
+	 */
 	public function shortcode_roller_if( $atts, $content ) {
 		$state = true;
 
@@ -239,6 +262,9 @@ class WP_Roller {
 		return '';
 	}
 
+	/**
+	 * Repeat the contents of the shortcode block multiple times.
+	 */
 	public function shortcode_roller_loop( $atts, $content ) {
 		if ( ! isset( $atts[ 0 ] ) ) {
 			return;
