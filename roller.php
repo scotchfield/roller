@@ -22,13 +22,7 @@ class WP_Roller {
 	/**
 	 * Instantiate, if necessary, and add hooks.
 	 */
-	public function __construct() {
-		if ( isset( self::$instance ) ) {
-			return;
-		}
-
-		self::$instance = $this;
-
+	private function __construct() {
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
@@ -36,6 +30,10 @@ class WP_Roller {
 	 * Return the single instance of our class.
 	 */
 	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new WP_Roller();
+		}
+
 		return self::$instance;
 	}
 
@@ -283,4 +281,4 @@ class WP_Roller {
 	}
 }
 
-$wp_roller = new WP_Roller();
+$wp_roller = WP_Roller::get_instance();

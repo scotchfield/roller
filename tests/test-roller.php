@@ -2,20 +2,17 @@
 
 class Test_Roller extends WP_UnitTestCase {
 
+	public function setUp() {
+		parent::setUp();
+	}
+
 	public function tearDown() {
 		$class = WP_Roller::get_instance();
 
 		$class->reset();
 		$class->clear();
-	}
 
-	/**
-	 * @covers WP_Roller::__construct
-	 */
-	public function test_new() {
-		$class = new WP_Roller();
-
-		$this->assertNotNull( $class );
+		parent::tearDown();
 	}
 
 	/**
