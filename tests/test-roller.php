@@ -4,13 +4,15 @@ class Test_Roller extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
+
+		$this->class = WP_Roller::get_instance();
 	}
 
 	public function tearDown() {
-		$class = WP_Roller::get_instance();
+		$this->class->reset();
+		$this->class->clear();
 
-		$class->reset();
-		$class->clear();
+		unset( $this->class );
 
 		parent::tearDown();
 	}
@@ -20,10 +22,9 @@ class Test_Roller extends WP_UnitTestCase {
 	 * @covers WP_Roller::reset
 	 */
 	public function test_init() {
-		$class = WP_Roller::get_instance();
-		$class->init();
+		$this->class->init();
 
-		$this->assertInternalType( 'array', $class->state );
+		$this->assertInternalType( 'array', $this->class->state );
 	}
 
 	/**
@@ -39,16 +40,14 @@ class Test_Roller extends WP_UnitTestCase {
 	 * @covers WP_Roller::clear
 	 */
 	public function test_clear() {
-		$class = WP_Roller::get_instance();
-
 		$list_id = 'test_list';
 
-		$class->update_list( $list_id, 'content' );
+		$this->class->update_list( $list_id, 'content' );
 
-		$class->reset();
-		$class->clear();
+		$this->class->reset();
+		$this->class->clear();
 
-		$this->assertFalse( $class->get_list( $list_id ) );
+		$this->assertFalse( $this->class->get_list( $list_id ) );
 	}
 
 	/**
