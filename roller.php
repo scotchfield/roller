@@ -48,6 +48,7 @@ class WP_Roller {
 		add_shortcode( 'roller_choose', array( $this, 'shortcode_roller_choose' ) );
 		add_shortcode( 'roller_if', array( $this, 'shortcode_roller_if' ) );
 		add_shortcode( 'roller_loop', array( $this, 'shortcode_roller_loop' ) );
+		add_shortcode( 'roller_exp', array( $this, 'shortcode_roller_exp' ) );
 
 		$this->reset();
 	}
