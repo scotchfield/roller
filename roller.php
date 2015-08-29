@@ -299,18 +299,25 @@ class WP_Roller {
 		}
 
 		$result = '';
-		$var = intval( $this->get_var( $exp[ 0 ] ) );
 		$op = $exp[ 1 ];
-		$value = intval( $exp[ 2 ] );
+
+		$left = $this->get_var( $exp[ 0 ] );
+		if ( null == $left ) {
+			$left = intval( $exp[ 0 ] );
+		}
+		$right = $this->get_var( $exp[ 2 ] );
+		if ( null == $right ) {
+			$right = intval( $exp[ 2 ] );
+		}
 
 		if ( $op == '+' ) {
-			$result = $var + $value;
+			$result = $left + $right;
 		} else if ( $exp[ 1 ] == '-' ) {
-			$result = $var - $value;
+			$result = $left - $right;
 		} else if ( $exp[ 1 ] == '*' ) {
-			$result = $var * $value;
-		} else if ( $exp[ 1 ] == '/' && intval( $exp[ 2 ] ) != 0 ) {
-			$result = $var / $value;
+			$result = $left * $right;
+		} else if ( $exp[ 1 ] == '/' && $right != 0 ) {
+			$result = $left / $right;
 		}
 
 		if ( isset( $atts[ 'var' ] ) ) {
