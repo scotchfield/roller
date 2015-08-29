@@ -294,20 +294,22 @@ class WP_Roller {
 
 		if ( count( $exp ) != 3 ) {
 			return '';
-		} else if ( null == $this->get_var( $exp[ 0 ] ) ) {
-			return '';
 		}
 
 		$result = '';
 		$op = $exp[ 1 ];
 
 		$left = $this->get_var( $exp[ 0 ] );
-		if ( null == $left ) {
+		if ( null == $left && is_numeric( $exp[ 0 ] ) ) {
 			$left = intval( $exp[ 0 ] );
 		}
 		$right = $this->get_var( $exp[ 2 ] );
-		if ( null == $right ) {
+		if ( null == $right && is_numeric( $exp[ 2 ] ) ) {
 			$right = intval( $exp[ 2 ] );
+		}
+
+		if ( null == $left || null == $right ) {
+			return '';
 		}
 
 		if ( $op == '+' ) {

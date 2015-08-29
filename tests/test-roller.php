@@ -447,6 +447,7 @@ class Test_Roller extends WP_UnitTestCase {
 		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
 
 		$this->assertEquals( 11, $this->class->shortcode_roller_exp( array( 'test+1' ) ) );
+		$this->assertEquals( 11, $this->class->shortcode_roller_exp( array( '1+test' ) ) );
 	}
 
 	/**
@@ -456,6 +457,7 @@ class Test_Roller extends WP_UnitTestCase {
 		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
 
 		$this->assertEquals( 9, $this->class->shortcode_roller_exp( array( 'test-1' ) ) );
+		$this->assertEquals( -9, $this->class->shortcode_roller_exp( array( '1-test' ) ) );
 	}
 
 	/**
@@ -465,6 +467,7 @@ class Test_Roller extends WP_UnitTestCase {
 		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
 
 		$this->assertEquals( 100, $this->class->shortcode_roller_exp( array( 'test*10' ) ) );
+		$this->assertEquals( 100, $this->class->shortcode_roller_exp( array( '10*test' ) ) );
 	}
 
 	/**
@@ -473,6 +476,7 @@ class Test_Roller extends WP_UnitTestCase {
 	public function test_shortcode_roller_exp_test_var_divide() {
 		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
 
+		$this->assertEquals( 1, $this->class->shortcode_roller_exp( array( '10/test' ) ) );
 		$this->assertEquals( 1, $this->class->shortcode_roller_exp( array( 'test/10' ) ) );
 	}
 
