@@ -489,4 +489,24 @@ class Test_Roller extends WP_UnitTestCase {
 		$this->assertEmpty( $this->class->shortcode_roller_exp( array( 'test/0' ) ) );
 	}
 
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_rounding() {
+		$this->assertEquals( 3, $this->class->shortcode_roller_exp( array( '25/10', 'round' ) ) );
+		$this->assertEquals( 3, $this->class->shortcode_roller_exp( array( '21/10', 'ceil' ) ) );
+		$this->assertEquals( 3, $this->class->shortcode_roller_exp( array( '39/10', 'floor' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_var() {
+		$var = 'test_var';
+
+		$this->assertNull( $this->class->shortcode_roller_exp( array( '1+1', 'var' => $var ) ) );
+
+		$this->assertEquals( 2, $this->class->get_var( $var ) );
+	}
+
 }
