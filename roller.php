@@ -279,6 +279,42 @@ class WP_Roller {
 
 		return $st;
 	}
+
+	/**
+	 * Evaluate a simple expression in the form var*3.
+	 * TODO: Build this out into a real parser. For now, variable operation integer.
+	 */
+	public function shortcode_roller_exp( $atts ) {
+		if ( ! isset( $atts[ 0 ] ) ) {
+			return '';
+		}
+
+		$exp = preg_split( "/([+*\/-])/", $atts[ 0 ], -1, PREG_SPLIT_DELIM_CAPTURE );
+
+		if ( count( $exp ) != 3 ) {
+			return '';
+		} else if ( null == $this->get_var( $exp[ 0 ] ) ) {
+			return '';
+		}
+
+		$result = '';
+		$var = intval( $this->get_var( $exp[ 0 ] ) );
+		$op = $exp[ 1 ];
+		$value = intval( $exp[ 2 ] );
+
+		if ( $op == '+' ) {
+			$result = $var + $value;
+		} else if ( $exp[ 1 ] == '-' ) {
+			$result = $var - $value;
+		} else if ( $exp[ 1 ] == '*' ) {
+			$result = $var * $value;
+		} else if ( $exp[ 1 ] == '/' && intval( $exp[ 2 ] ) != 0 ) {
+			$result = $var / $value;
+		}
+
+		return $result;
+	}
+
 }
 
 $wp_roller = WP_Roller::get_instance();

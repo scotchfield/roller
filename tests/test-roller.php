@@ -419,4 +419,70 @@ class Test_Roller extends WP_UnitTestCase {
 		);
 	}
 
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_invalid() {
+		$this->assertEmpty( $this->class->shortcode_roller_exp( false ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_empty() {
+		$this->assertEmpty( $this->class->shortcode_roller_exp( array( '' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_var_not_set() {
+		$this->assertEmpty( $this->class->shortcode_roller_exp( array( 'testnotexist+1' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_var_add() {
+		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
+
+		$this->assertEquals( 11, $this->class->shortcode_roller_exp( array( 'test+1' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_var_subtract() {
+		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
+
+		$this->assertEquals( 9, $this->class->shortcode_roller_exp( array( 'test-1' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_var_multiply() {
+		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
+
+		$this->assertEquals( 100, $this->class->shortcode_roller_exp( array( 'test*10' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_var_divide() {
+		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
+
+		$this->assertEquals( 1, $this->class->shortcode_roller_exp( array( 'test/10' ) ) );
+	}
+
+	/**
+	 * @covers WP_Roller::shortcode_roller_exp
+	 */
+	public function test_shortcode_roller_exp_test_var_divide_by_zero() {
+		$this->class->shortcode_roller( array( '10d1', 'var' => 'test' ) );
+
+		$this->assertEmpty( $this->class->shortcode_roller_exp( array( 'test/0' ) ) );
+	}
+
 }
