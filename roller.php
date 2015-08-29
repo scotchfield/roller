@@ -313,7 +313,11 @@ class WP_Roller {
 			$result = $var / $value;
 		}
 
-		return $result;
+		if ( isset( $atts[ 'var' ] ) ) {
+			$this->state[ $atts[ 'var' ] ] = $result;
+		} else {
+			return $result;
+		}
 	}
 
 }
