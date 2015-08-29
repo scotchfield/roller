@@ -322,6 +322,14 @@ class WP_Roller {
 			$result = $left / $right;
 		}
 
+		if ( in_array( 'round', $atts ) ) {
+			$result = round( $result );
+		} else if ( in_array( 'ceil', $atts ) ) {
+			$result = ceil( $result );
+		} else if ( in_array( 'floor', $atts ) ) {
+			$result = floor( $result );
+		}
+
 		if ( isset( $atts[ 'var' ] ) ) {
 			$this->state[ $atts[ 'var' ] ] = $result;
 		} else {
