@@ -6,15 +6,31 @@ class Test_Roller extends WP_UnitTestCase {
 		parent::setUp();
 
 		$this->class = WP_Roller::get_instance();
+
+		$this->wp_die = false;
+		add_filter( 'wp_die_handler', array( $this, 'get_wp_die_handler' ), 1, 1 );
 	}
 
 	public function tearDown() {
+		remove_filter( 'wp_die_handler', array( $this, 'get_wp_die_handler' ) );
+		unset( $this->wp_die );
+
 		$this->class->reset();
 		$this->class->clear();
 
 		unset( $this->class );
 
 		parent::tearDown();
+	}
+
+	public function get_wp_die_handler( $handler ) {
+		return array( $this, 'wp_die_handler' );
+	}
+
+	public function wp_die_handler( $message ) {
+		$this->wp_die = true;
+
+		throw new WPDieException( $message );
 	}
 
 	/**
@@ -84,6 +100,17 @@ class Test_Roller extends WP_UnitTestCase {
 		$class->update_list( $list_id, $list );
 
 		$this->assertEquals( $list, $class->get_list( $list_id ) );
+	}
+
+	/**
+	 * @covers WP_Roller::roller_page
+	 */
+	public function test_roller_page_empty() {
+		try {
+			$this->class->roller_page();
+		} catch ( WPDieException $e ) {}
+
+		$this->assertTrue( $this->wp_die );
 	}
 
 	/**
