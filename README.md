@@ -13,8 +13,8 @@ You write:
 
 The page shows:
 
-> STR: 7
-> DEX: 11
+> STR: 7  
+> DEX: 11  
 > INT: 17
 
 ## Save dice rolls as variables
@@ -29,6 +29,6 @@ You write:
 
 The page shows:
 
-> STR: 12
-> DEX: 7
+> STR: 12  
+> DEX: 7  
 > INT: 13
