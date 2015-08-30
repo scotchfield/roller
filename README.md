@@ -32,3 +32,39 @@ The page shows:
 > STR: 12  
 > DEX: 7  
 > INT: 13
+
+## Equations
+
+You write:
+
+		[roller 3d6 var=pow]
+		[roller_exp pow*5 var=san]
+
+		POW: [roller_var pow]
+		SAN: [roller_var san]
+
+The page shows:
+
+> POW: 9  
+> SAN: 45
+
+## Conditionals and random list elements
+
+You declare a list in the dashboard:
+
+![List selection](screenshots/lists.png)
+
+You write:
+
+		[roller_choose var=gender list=gender]
+
+		[roller_if gender=Male][roller_choose var=first_name list=first_name_male][/roller_if]
+		[roller_if gender=Female][roller_choose var=first_name list=first_name_female][/roller_if]
+
+		Name: [roller_var first_name] [roller_choose list=last_name]
+		Gender: [roller_var gender]
+
+The page shows:
+
+> Name: Amanda Aaronson  
+> Gender: Female
