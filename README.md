@@ -66,5 +66,5 @@ You write:
 
 The page shows:
 
-> Name: Amanda Aaronson  
+> Name: Amanda Bartlesby  
 > Gender: Female
