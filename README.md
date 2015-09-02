@@ -52,7 +52,7 @@ The page shows:
 
 You declare a list in the dashboard:
 
-![List selection](assets/lists.png)
+![List selection](assets/screenshot-1.png)
 
 You write:
 
