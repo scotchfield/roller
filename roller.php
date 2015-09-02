@@ -147,6 +147,20 @@ class WP_Roller {
 ?>
 <h1>Roller</h1>
 
+<hr>
+
+<h2>Shortcodes:</h2>
+<ul>
+	<li>Roll some dice: <b>[roller 3d6]</b></li>
+	<li>Save dice rolls as variables: <b>[roller 3d6 var=str]</b></li>
+	<li>Display a variable's value: <b>[roller_var str]</b></li>
+	<li>Equations: <b>[roller 3d6 var=pow] [roller_exp pow*5 var=san]</b></li>
+	<li>Random list elements: <b>[roller_choose var=gender list=gender]</b> <i>(Lists are defined at the bottom of this page)</i></li>
+	<li>Conditionals: <b>[roller_if gender=Female][roller_choose var=first_name list=first_name_female][/roller_if]</b></li>
+</ul>
+
+<hr>
+
 <form method="post">
 <p>
 <b>New list:</b>
