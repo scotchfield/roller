@@ -28,7 +28,7 @@ Display a variable's value: [roller_var str]
 
 Equations: [roller 3d6 var=pow] [roller_exp pow*5 var=san]
 
-Random list elements: [roller_choose var=gender list=gender] (Lists are defined at the bottom of this page)
+Random list elements: [roller_choose var=gender list=gender]
 
 Conditionals: [roller_if gender=Female][roller_choose var=first_name list=first_name_female][/roller_if]
 
